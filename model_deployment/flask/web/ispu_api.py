@@ -1,5 +1,6 @@
 import pandas as pd
 import joblib
+import os
 from flask import Flask, redirect, url_for, request, render_template
 
 app = Flask(__name__)
@@ -20,7 +21,8 @@ def prediction_result():
     nitrogen_dioksida = request.form.get('inputno2')
 
     #load the trained model.
-    filename = 'model.pkl'
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    filename = os.path.join(current_directory, 'model.pkl')
     loaded_model= joblib.load(filename)
     #create new dataframe
     df_input = pd.DataFrame(columns = ['pm_duakomalima', 'pm_sepuluh', 'sulfur_dioksida', 'karbon_monoksida', 'ozon', 'nitrogen_dioksida'])
@@ -28,22 +30,24 @@ def prediction_result():
     #print(df_input)
     result = loaded_model.predict(df_input)
     #print(result)
-    # for i in result:
-    #     int_result = int(i)
-    #     if(int_result==0):
-    #         decision='Suspect Blood Donor'
-    #     elif (int_result==1):
-    #         decision='Hepatitis'
-    #     elif (int_result==2):
-    #         decision='Fibrosis'
-    #     elif (int_result==3):
-    #         decision='Cirrhosis'
-    #     else:
-    #         decision='Not defined'
-    #print('Disease is ', decision)
+    for i in result:
+        int_result = int(i)
+        if(int_result==0):
+            decision='BAIK'
+        elif (int_result==1):
+            decision='SEDANG'
+        elif (int_result==2):
+            decision='TIDAK SEHAT'
+        elif (int_result==3):
+            decision='SANGAT TIDAK SEHAT'
+        elif (int_result==4):
+            decision='BERBAHAYA'
+        else:
+            decision='Not defined'
+    print('Level kualitas udara adalah ', decision)
     #return the output and load result.html
     return render_template('result.html', pm_duakomalima=pm_duakomalima, pm_sepuluh=pm_sepuluh, sulfur_dioksida=sulfur_dioksida, 
-                           karbon_monoksida=karbon_monoksida, ozon=ozon, nitrogen_dioksida=nitrogen_dioksida)
+                           karbon_monoksida=karbon_monoksida, ozon=ozon, nitrogen_dioksida=nitrogen_dioksida, status=decision)
 
 if __name__ == "__main__":
     #host= ip address, port = port number
