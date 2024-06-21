@@ -51,7 +51,7 @@ model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
 # Menyimpan model
-joblib.dump(model, 'model.pkl')
+joblib.dump(model, 'model.model')
 
 # Menyimpan Label Encoder
 joblib.dump(le, 'label_encoder.pkl')

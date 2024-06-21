@@ -12,15 +12,15 @@ def index():
 @app.route('/ispa/result/', methods=["POST"])
 def prediction_result():
     #receiving parameters sent by client
-    pm_duakomalima = request.form.get('pm_duakomalima')
-    pm_sepuluh = request.form.get('pm_sepuluh')
-    sulfur_dioksida = request.form.get('sulfur_dioksida')
-    karbon_monoksida = request.form.get('karbon_monoksida')
-    ozon = request.form.get('ozon')
-    nitrogen_dioksida = request.form.get('nitrogen_dioksida')
+    pm_duakomalima = request.form.get('inputpm25')
+    pm_sepuluh = request.form.get('inputpm10')
+    sulfur_dioksida = request.form.get('inputso2')
+    karbon_monoksida = request.form.get('inputco')
+    ozon = request.form.get('inputo3')
+    nitrogen_dioksida = request.form.get('inputno2')
 
     #load the trained model.
-    filename = 'dt_model.model'
+    filename = 'model.pkl'
     loaded_model= joblib.load(filename)
     #create new dataframe
     df_input = pd.DataFrame(columns = ['pm_duakomalima', 'pm_sepuluh', 'sulfur_dioksida', 'karbon_monoksida', 'ozon', 'nitrogen_dioksida'])
@@ -42,8 +42,8 @@ def prediction_result():
     #         decision='Not defined'
     #print('Disease is ', decision)
     #return the output and load result.html
-    # return render_template('result.html', age=age, sex=sex, alb=alb, alp=alp, alt=alt, ast=ast, bil=bil, 
-    #                        che=che, chol=chol, crea=crea, ggt=ggt, prot=prot, status=decision)
+    return render_template('result.html', pm_duakomalima=pm_duakomalima, pm_sepuluh=pm_sepuluh, sulfur_dioksida=sulfur_dioksida, 
+                           karbon_monoksida=karbon_monoksida, ozon=ozon, nitrogen_dioksida=nitrogen_dioksida)
 
 if __name__ == "__main__":
     #host= ip address, port = port number
