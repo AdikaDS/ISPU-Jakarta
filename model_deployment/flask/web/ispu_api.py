@@ -27,7 +27,7 @@ def prediction_result():
     #create new dataframe
     df_input = pd.DataFrame(columns = ['pm_duakomalima', 'pm_sepuluh', 'sulfur_dioksida', 'karbon_monoksida', 'ozon', 'nitrogen_dioksida'])
     df_input.loc[0] = [pm_duakomalima, pm_sepuluh, sulfur_dioksida, karbon_monoksida, ozon, nitrogen_dioksida]
-    #print(df_input)
+    # print(df_input)
     result = loaded_model.predict(df_input)
     #print(result)
     for i in result:

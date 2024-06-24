@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.impute import SimpleImputer
 
 # Mendapatkan path direktori tempat script Python berada
 base_dir = os.path.dirname(__file__)
@@ -18,19 +19,12 @@ file_path = os.path.join(base_dir, file_name)
 # Memuat data
 df = pd.read_csv(file_path, sep=',', decimal=',')
 
-# Menampilkan nama kolom
-# print(df)
-
 # Data Cleaning - Mengisi nilai NaN dengan rata-rata kolom
-df = df.dropna()
-
-# columns_with_nan = ["pm_duakomalima", "pm_sepuluh", "sulfur_dioksida", "karbon_monoksida", "ozon", "nitrogen_dioksida"]
-# for column in columns_with_nan:
-#     if column in df.columns:
-#         mean_value = df[column].mean()
-#         df[column].fillna(mean_value, inplace=True)
-#     else:
-#         print(f"Kolom {column} tidak ditemukan dalam dataset.")
+columns_with_nan = ["pm_duakomalima", "pm_sepuluh", "sulfur_dioksida", "karbon_monoksida", "ozon", "nitrogen_dioksida"]
+for column in columns_with_nan:
+    if column in df.columns:
+        imputer = SimpleImputer(strategy='mean')
+        df[column] = imputer.fit_transform(df[[column]])
 
 # Data Preprocessing
 # Memilih fitur dan target
@@ -40,6 +34,7 @@ df_y = df[['kategori']]
 # Label Encoding untuk target
 le = LabelEncoder()
 df_y = le.fit_transform(df_y['kategori'])
+
 # Mengubah X dan Y menjadi array NumPy
 X = df_X.astype(float).values
 y = df_y.astype(float)
