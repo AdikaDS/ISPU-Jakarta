@@ -5,7 +5,7 @@ function getLevel(result) {
                 name: "Good", 
                 class: "level-baik", 
                 desc:  "The air quality level is very good, has no negative effects on humans, animals and plants.", 
-                recom: "-" 
+                recom: "No specific actions needed. It's a great time to be outdoors and enjoy outdoor activities." 
             };
             break;
         case "Sedang":
@@ -21,7 +21,7 @@ function getLevel(result) {
                 name: "Unhealthy", 
                 class: "level-tidak-sehat", 
                 desc: "Air quality levels that are detrimental to humans, animals and plants.", 
-                recom: "-" 
+                recom: "People should limit prolonged outdoor exertion. Sensitive groups should avoid outdoor activities." 
             };
             break;
         case "SANGAT TIDAK SEHAT":
@@ -29,14 +29,14 @@ function getLevel(result) {
                 name: "Very Unhealthy", 
                 class: "level-sangat-tidak-sehat", 
                 desc: "Air quality levels that can increase health risks in a number of exposed segments of the population.", 
-                recom: "-" 
+                recom: "People should avoid prolonged outdoor exertion. Sensitive groups should stay indoors and keep activity levels low." 
             };
             break;
         case "BERBAHAYA":
             return { name: "Dangerous!", 
             class: "level-berbahaya", 
             desc: "Air quality levels that can seriously harm the health of the population and require immediate treatment.", 
-            recom: "-" 
+            recom: "People should avoid all outdoor activities. Stay indoors with windows and doors closed, and seek medical attention if experiencing health issues." 
         };
             break;
         default:
