@@ -1,0 +1,37 @@
+.level-baik {
+    background-color: #B4DD68;
+}
+.level-sedang {
+    background-color: #F2D659;
+}
+.level-tidak-sehat{
+    background-color: #EBA05E;
+}
+.level-sangat-tidak-sehat{
+    background-color: #E5756C;
+}
+.level-berbahaya{
+    background-color: #966D7B;
+}
+
+.btn.submit-btn:hover{
+    background-color: #0088be !important;
+}
+.btn.reset-btn:hover{
+    background-color: #00A0E0;
+    color: white !important;
+}
+
+@media (min-width: 768px) {
+    .custom-rounded {
+        border-top-left-radius: 1rem;
+        border-bottom-left-radius: 1rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .custom-rounded {
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+    }
+}
