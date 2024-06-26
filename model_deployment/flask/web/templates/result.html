@@ -12,7 +12,7 @@
         <div class="rounded-4 mt-5 mx-auto" style="box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);">
             <div class="row g-0">
                 <div class="col-md-5">
-                    <div class="d-flex flex-column justify-content-between p-4 p-sm-5 custom-rounded" style="background-image: url('/static/blue-city.jpg'); background-size: cover; background-position: center; height: 100%;">
+                    <div class="d-flex flex-column justify-content-between p-4 p-sm-5 custom-rounded" style="background-image: url('/static/img/blue-city.jpg'); background-size: cover; background-position: center; height: 100%;">
                         <h2 class="fw-bold text-white">AIR <br> QUALITY <br> PREDICTION</h2>
                         <p class="m-0 fw-semibold text-white">Group 1</p>
                     </div>
@@ -23,43 +23,34 @@
                         <div class="row mb-2">
                             <div class="col-12 col-sm mb-2 mb-sm">
                                 <label for="inputpm10" class="form-label">PM10</label>
-                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputpm10" placeholder="Enter a value between 0-500" value="{{pm_sepuluh}}">
+                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputpm10" placeholder="Enter a value between 0-500" value="{{pm_sepuluh}}" readonly>
                             </div>
-                            <div class="col">
-                                <label for="inputpm25" class="form-label">PM2.5</label>
-                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputpm25" placeholder="Enter a value between 0-500" value="{{pm_duakomalima}}">
+                            <div class="col-12 col-sm mb-2 mb-sm">
+                                <label for="inputso2" class="form-label">SO2</label>
+                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputso2" placeholder="Enter a value between 0-500" value="{{sulfur_dioksida}}" readonly>
                             </div>
                         </div>
     
                         <div class="row mb-2">
-                            <div class="col-12 col-sm mb-2 mb-sm">
-                                <label for="inputso2" class="form-label">SO2</label>
-                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputso2" placeholder="Enter a value between 0-500" value="{{sulfur_dioksida}}">
-                            </div>
                             <div class="col">
                                 <label for="inputco" class="form-label">CO</label>
-                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputco" placeholder="Enter a value between 0-500" value="{{karbon_monoksida}}">
+                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputco" placeholder="Enter a value between 0-500" value="{{karbon_monoksida}}" readonly>
+                            </div>
+                            <div class="col-12 col-sm mb-2 mb-sm">
+                                <label for="inputo3" class="form-label">O3</label>
+                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputo3" placeholder="Enter a value between 0-500" value="{{ozon}}" readonly>
                             </div>
                         </div>
     
                         <div class="row">
-                            <div class="col-12 col-sm mb-2 mb-sm">
-                                <label for="inputo3" class="form-label">O3</label>
-                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputo3" placeholder="Enter a value between 0-500" value="{{ozon}}">
-                            </div>
                             <div class="col">
                                 <label for="inputno2" class="form-label">NO2</label>
-                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputno2" placeholder="Enter a value between 0-500" value="{{nitrogen_dioksida}}">
+                                <input type="text" class="form-control bg-secondary-subtle border-0" id="inputno2" placeholder="Enter a value between 0-500" value="{{nitrogen_dioksida}}" readonly>
                             </div>
-                        </div>
-                        <br>
-                        <div class="d-flex justify-content-center">
-                            <button type="button" class="btn submit-btn flex-grow-1 me-3 text-white" style="max-width: 120px; background-color: #00A0E0; ">Submit</button>
-                            <button type="reset" class="btn reset-btn flex-grow-1" style="max-width: 120px; border-color: #00A0E0; color: #00A0E0;">Reset</button>
                         </div>
                     </form>
                     <h5 class="mt-3 mb-0">Prediction Results:</h5>
-                    <p id="status-value" style="display: none;">{{ status }}</p>
+                    <div id="output" class="bg-light p-3 border rounded">{{status}}</div>
                     <div class="container mt-2 p-0">
                         <div class="card">
                             <div class="card-header p-3" id="result-card-header">

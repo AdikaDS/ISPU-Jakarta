@@ -6,29 +6,29 @@ import os
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, ConfusionMatrixDisplay
 from sklearn.impute import SimpleImputer
 
 # Mendapatkan path direktori tempat script Python berada
 base_dir = os.path.dirname(__file__)
 
 # Mendapatkan path ke file CSV menggunakan path relatif
-file_name = 'Data_ISPU_DKI_JAKARTA.csv'
+file_name = 'Data_ISPU_DKI_JAKARTA_2018_2023.csv'
 file_path = os.path.join(base_dir, file_name)
 
 # Memuat data
 df = pd.read_csv(file_path, sep=',', decimal=',')
+print(df)
+
+df.replace('-', np.nan, inplace=True)
+df.replace('---', np.nan, inplace=True)
 
 # Data Cleaning - Mengisi nilai NaN dengan rata-rata kolom
-columns_with_nan = ["pm_duakomalima", "pm_sepuluh", "sulfur_dioksida", "karbon_monoksida", "ozon", "nitrogen_dioksida"]
-for column in columns_with_nan:
-    if column in df.columns:
-        imputer = SimpleImputer(strategy='mean')
-        df[column] = imputer.fit_transform(df[[column]])
+df.dropna(axis=0,inplace=True)
 
 # Data Preprocessing
 # Memilih fitur dan target
-df_X = df.drop(['periode_data', 'bulan', 'tanggal', 'stasiun', 'max', 'parameter_pencemar_kritis', 'kategori'], axis=1)
+df_X = df.drop(['periode_data', 'tanggal', 'stasiun', 'max', 'parameter_pencemar_kritis', 'kategori'], axis=1)
 df_y = df[['kategori']]
 
 # Label Encoding untuk target
@@ -47,18 +47,20 @@ scaler = StandardScaler().fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
-# Menyimpan Scaler
-# joblib.dump(scaler, 'scaler.pkl')
-
 # Membuat dan melatih model
-model = RandomForestClassifier(n_estimators=100, random_state=42)
+model = RandomForestClassifier(
+    n_estimators=100,           # Default is 100
+    max_depth=None,             # Default is None (nodes are expanded until all leaves are pure or until all leaves contain less than min_samples_split samples)
+    min_samples_split=3,        # Default is 2
+    min_samples_leaf=2,         # Default is 1
+    max_features='sqrt',        # Default is 'auto'
+    bootstrap=True,             # Default is True
+    random_state=42             # To ensure reproducibility
+)
 model.fit(X_train, y_train)
 
 # Menyimpan model
-joblib.dump(model, 'model.pkl')
-
-# Menyimpan Label Encoder
-# joblib.dump(le, 'label_encoder.pkl')
+joblib.dump(model, 'modelRN.pkl')
 
 # Evaluasi model
 y_pred = model.predict(X_test)

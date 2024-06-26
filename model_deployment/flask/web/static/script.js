@@ -1,6 +1,6 @@
 function getLevel(result) {
     switch (result) {
-        case "BAIK":
+        case "Baik":
             return { 
                 name: "Good", 
                 class: "level-baik", 
@@ -8,7 +8,7 @@ function getLevel(result) {
                 recom: "-" 
             };
             break;
-        case "SEDANG":
+        case "Sedang":
             return { 
                 name: "Medium", 
                 class: "level-sedang", 
@@ -16,7 +16,7 @@ function getLevel(result) {
                 recom: "People with vulnerable physical conditions should reduce outdoor activities and/or work hard." 
             };
             break;
-        case "TIDAK SEHAT":
+        case "Tidak Sehat":
             return { 
                 name: "Unhealthy", 
                 class: "level-tidak-sehat", 
@@ -62,7 +62,7 @@ function updatePrediction(status) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    var status = document.getElementById("status-value").innerText.trim();
+    var status = document.getElementById("output").innerText.trim();
 
     updatePrediction(status);
 });
