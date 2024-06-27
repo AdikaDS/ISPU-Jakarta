@@ -24,7 +24,7 @@ function getLevel(result) {
                 recom: "People should limit prolonged outdoor exertion. Sensitive groups should avoid outdoor activities." 
             };
             break;
-        case "SANGAT TIDAK SEHAT":
+        case "Sangat Tidak Sehat":
             return { 
                 name: "Very Unhealthy", 
                 class: "level-sangat-tidak-sehat", 
@@ -32,7 +32,7 @@ function getLevel(result) {
                 recom: "People should avoid prolonged outdoor exertion. Sensitive groups should stay indoors and keep activity levels low." 
             };
             break;
-        case "BERBAHAYA":
+        case "Berbahaya":
             return { name: "Dangerous!", 
             class: "level-berbahaya", 
             desc: "Air quality levels that can seriously harm the health of the population and require immediate treatment.", 

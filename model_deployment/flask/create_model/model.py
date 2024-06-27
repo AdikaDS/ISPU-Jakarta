@@ -4,43 +4,71 @@ import joblib
 import os
 
 from sklearn.model_selection import train_test_split
+from imblearn.over_sampling import SMOTE
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, ConfusionMatrixDisplay
 from sklearn.impute import SimpleImputer
+from imblearn.over_sampling import RandomOverSampler
 
 # Mendapatkan path direktori tempat script Python berada
 base_dir = os.path.dirname(__file__)
 
 # Mendapatkan path ke file CSV menggunakan path relatif
-file_name = 'Data_ISPU_DKI_JAKARTA_2018_2023.csv'
+file_name = 'Data_ISPU_DKI_JAKARTA.csv'
 file_path = os.path.join(base_dir, file_name)
 
 # Memuat data
 df = pd.read_csv(file_path, sep=',', decimal=',')
-print(df)
 
-df.replace('-', np.nan, inplace=True)
-df.replace('---', np.nan, inplace=True)
+# df_cleaned = df[(df['kategori'] != 'SANGAT TIDAK SEHAT') & (df['kategori']!= 'TIDAK ADA DATA')]
+df_cleaned = df[(df['kategori']!= 'TIDAK ADA DATA')]
+df = df_cleaned
 
 # Data Cleaning - Mengisi nilai NaN dengan rata-rata kolom
-df.dropna(axis=0,inplace=True)
+df['pm_sepuluh'].fillna(df['pm_sepuluh'].median(), inplace=True)
+df['pm_duakomalima'].fillna(df['pm_duakomalima'].mean(), inplace=True)
+df['sulfur_dioksida'].fillna(df['sulfur_dioksida'].median(), inplace=True)
+df['karbon_monoksida'].fillna(df['karbon_monoksida'].median(), inplace=True)
+df['nitrogen_dioksida'].fillna(df['nitrogen_dioksida'].median(), inplace=True)
+
+df['parameter_pencemar_kritis'].fillna(df['parameter_pencemar_kritis'].value_counts().index[0], inplace=True)
 
 # Data Preprocessing
 # Memilih fitur dan target
-df_X = df.drop(['periode_data', 'tanggal', 'stasiun', 'max', 'parameter_pencemar_kritis', 'kategori'], axis=1)
+df_X = df.drop(['periode_data', 'bulan', 'tanggal', 'stasiun', 'max', 'parameter_pencemar_kritis', 'kategori'], axis=1)
 df_y = df[['kategori']]
 
 # Label Encoding untuk target
 le = LabelEncoder()
 df_y = le.fit_transform(df_y['kategori'])
 
+#categorical encoding
+#merubah categorical value menjadi numerical value
+#bisa pakai label encoding, ordinal atau one hot encoding
+cats = df_X.select_dtypes(include=['object', 'bool']).columns
+cat_features = list(cats.values)
+for i in cat_features:
+  le.fit(df_X[i])
+  df_X[i] = le.transform(df_X[i])
+
 # Mengubah X dan Y menjadi array NumPy
 X = df_X.astype(float).values
-y = df_y.astype(float)
+y = df_y.astype(int)
 
-# Membagi data menjadi 80% Training dan 20% Testing
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Membagi data menjadi 70% Training dan 30% Testing
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Periksa distribusi kelas sebelum resampling
+print("Distribusi kelas sebelum resampling:", np.bincount(y_train))
+
+# Mengatasi Imbalanced Classes menggunakan RandomOverSampler
+ros = RandomOverSampler(random_state=42)
+X_train, y_train = ros.fit_resample(X_train, y_train)
+
+
+# Periksa distribusi kelas setelah resampling
+print("Distribusi kelas setelah resampling:", np.bincount(y_train))
 
 # Scaling
 scaler = StandardScaler().fit(X_train)
@@ -61,6 +89,9 @@ model.fit(X_train, y_train)
 
 # Menyimpan model
 joblib.dump(model, 'modelRN.pkl')
+
+# Menyimpan Scaler
+joblib.dump(scaler, 'scaler.pkl')
 
 # Evaluasi model
 y_pred = model.predict(X_test)
